@@ -14,5 +14,5 @@ char *_getenv(const char *name)
 	{
 		return (NULL);
 	}
-	return (strdup(value));
+	return (_strdup(value));
 }
