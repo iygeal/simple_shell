@@ -10,7 +10,8 @@
 int main(int argc, char **argv)
 {
 	int i;
-	char line[MAX_LINE];
+	char *line = NULL;
+	size_t len = 0;
 	char **argv_exec = NULL;
 
 	(void)argc;
@@ -20,14 +21,14 @@ int main(int argc, char **argv)
 	while (1)
 	{
 		my_print("iyjim_shell$ ");
-		if (fgets(line, MAX_LINE, stdin) != NULL)
+		if (getline(&line, &len, stdin) != -1)
 		{
 			process_line(line, &argv_exec);
 			fork_and_execute(argv_exec);
 		}
 		else
 		{
-			perror("fgets failed");
+			perror("getline failed");
 			exit(0);
 		}
 	}
@@ -39,5 +40,7 @@ int main(int argc, char **argv)
 		}
 		free(argv_exec);
 	}
+	free(line);
+
 	return (0);
 }

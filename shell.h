@@ -21,5 +21,6 @@ void print_arguments(char **argv);
 char **split_line(char *line);
 void execute_ls_command(char **argv_exec);
 char *find_command(char *command);
+char *_getenv(const char *name);
 
 #endif /* SHELL_ */

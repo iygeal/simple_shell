@@ -75,6 +75,7 @@ void process_line(char *line, char ***argv_exec)
 	for (i = 0; words[i] != NULL; i++);
 
 	*argv_exec = malloc((i + 1) * sizeof(char *));
+
 	if (*argv_exec == NULL)
 	{
 		perror("process_line malloc failed");
@@ -84,6 +85,7 @@ void process_line(char *line, char ***argv_exec)
 	for (i = 0; words[i] != NULL; i++)
 	{	
 		(*argv_exec)[i] = strdup(words[i]);
+
 		if ((*argv_exec)[i] == NULL)
 		{
 			perror("process_line strdup failed");
@@ -174,7 +176,7 @@ char *find_command(char *command)
 	char *path = NULL;
     char *path_copy = NULL;
     
-	path = getenv("PATH");
+	path = _getenv("PATH");
     path_copy = strdup(path);
     
 	if (!path)
@@ -195,6 +197,7 @@ char *find_command(char *command)
     while (dir)
     {
         filepath = malloc(strlen(dir) + strlen(command) + 2);
+
         if (!filepath)
         {
             perror("find_command: Failed to allocate memory for filepath");
@@ -209,7 +212,7 @@ char *find_command(char *command)
         if (access(filepath, F_OK) == 0)
         {
             free(path_copy);
-            return filepath;
+            return (filepath);
         }
 
         free(filepath);
@@ -217,14 +220,13 @@ char *find_command(char *command)
     }
 
     free(path_copy);
-    return NULL;
+    return (NULL);
 }
 
 /**
  * fork_and_execute - create a child process and execute a command
- * @line: The command to be executed
- * @argv_exec: The array containing the command and arguments for execve
- * Return: Void
+ * @argv_exec: The array containing the command
+ * and arguments for execve
  */
 
 void fork_and_execute(char **argv_exec)
@@ -239,7 +241,7 @@ void fork_and_execute(char **argv_exec)
 	{
 		char *path = NULL;
 
-		path = strdup(getenv("PATH"));
+		path = strdup(_getenv("PATH"));
 
 		if (path == NULL)
 		{
@@ -261,7 +263,9 @@ void fork_and_execute(char **argv_exec)
 					perror("fork_and_exec malloc failed");
 					exit(EXIT_FAILURE);
 				}
-				snprintf(filepath, strlen(dir) + strlen(argv_exec[i]) + 2, "%s/%s", dir, argv_exec[i]);
+				strcpy(filepath, dir);
+				strcat(filepath, "/");
+				strcat(filepath, argv_exec[i]);
 
 				if (access(filepath, F_OK) == 0)
 				{
@@ -285,7 +289,7 @@ void fork_and_execute(char **argv_exec)
 			}
 			free(path);
 
-			path = strdup(getenv("PATH"));
+			path = strdup(_getenv("PATH"));
 
 			if (path == NULL)
 			{
