@@ -8,5 +8,5 @@
 
 void my_print(const char *msg)
 {
-	write(STDOUT_FILENO, msg, strlen(msg));
+	write(STDOUT_FILENO, msg, _strlen(msg));
 }

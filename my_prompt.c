@@ -37,7 +37,7 @@ char **split_line(char *line)
 	word = strtok(line, " ");
 	while (word != NULL)
 	{
-		words[index] = strdup(word);
+		words[index] = _strdup(word);
 		if (!words[index])
 		{
 			perror("Memory allocation failed");
@@ -63,7 +63,7 @@ void process_line(char *line, char ***argv_exec)
 	int i = 0;
 	size_t len;
 
-	len = strlen(line);
+	len = _strlen(line);
 
 	if (len > 0 && line[len - 1] == '\n')
 	{
@@ -84,11 +84,11 @@ void process_line(char *line, char ***argv_exec)
 
 	for (i = 0; words[i] != NULL; i++)
 	{	
-		(*argv_exec)[i] = strdup(words[i]);
+		(*argv_exec)[i] = _strdup(words[i]);
 
 		if ((*argv_exec)[i] == NULL)
 		{
-			perror("process_line strdup failed");
+			perror("process_line _strdup failed");
 			exit(EXIT_FAILURE);
 		}
 
@@ -138,7 +138,7 @@ void execute_ls_command(char **argv_exec)
 		{
 			waitpid(pid, &status, 0);
 
-			strcpy(buffer, "Child ");
+			_strcpy(buffer, "Child ");
 
 			do
 			{
@@ -155,8 +155,8 @@ void execute_ls_command(char **argv_exec)
 				numBuffer[digits - j - 1] = tmp;
 			}
 			numBuffer[digits] = '\0';
-			strcat(buffer, numBuffer);
-			strcat(buffer, " terminated\n");
+			_strcat(buffer, numBuffer);
+			_strcat(buffer, " terminated\n");
 
 			my_print(buffer);
 		}
@@ -177,7 +177,7 @@ char *find_command(char *command)
     char *path_copy = NULL;
     
 	path = _getenv("PATH");
-    path_copy = strdup(path);
+    path_copy = _strdup(path);
     
 	if (!path)
 	{
@@ -196,7 +196,7 @@ char *find_command(char *command)
 
     while (dir)
     {
-        filepath = malloc(strlen(dir) + strlen(command) + 2);
+        filepath = malloc(_strlen(dir) + _strlen(command) + 2);
 
         if (!filepath)
         {
@@ -205,9 +205,9 @@ char *find_command(char *command)
         }
 		filepath[0] = '\0';
 
-		strcat(filepath, dir);
-		strcat(filepath, "/");
-		strcat(filepath, command);
+		_strcat(filepath, dir);
+		_strcat(filepath, "/");
+		_strcat(filepath, command);
 
         if (access(filepath, F_OK) == 0)
         {
@@ -237,15 +237,15 @@ void fork_and_execute(char **argv_exec)
 	char *cmd_path = NULL;
 	pid_t pid = 0;
 
-	if (strcmp(argv_exec[0], "_which") == 0)
+	if (_strcmp(argv_exec[0], "_which") == 0)
 	{
 		char *path = NULL;
 
-		path = strdup(_getenv("PATH"));
+		path = _strdup(_getenv("PATH"));
 
 		if (path == NULL)
 		{
-			perror("fork_execute strdup failed");
+			perror("fork_execute _strdup failed");
 			exit(EXIT_FAILURE);
 		}
 
@@ -256,16 +256,16 @@ void fork_and_execute(char **argv_exec)
 
 			while (dir != NULL)
 			{
-				filepath = malloc(strlen(dir) + strlen(argv_exec[i]) + 2);
+				filepath = malloc(_strlen(dir) + _strlen(argv_exec[i]) + 2);
 
 				if (filepath == NULL)
 				{
 					perror("fork_and_exec malloc failed");
 					exit(EXIT_FAILURE);
 				}
-				strcpy(filepath, dir);
-				strcat(filepath, "/");
-				strcat(filepath, argv_exec[i]);
+				_strcpy(filepath, dir);
+				_strcat(filepath, "/");
+				_strcat(filepath, argv_exec[i]);
 
 				if (access(filepath, F_OK) == 0)
 				{
@@ -280,20 +280,20 @@ void fork_and_execute(char **argv_exec)
 			}
 			if (dir == NULL)
 			{
-				msg = malloc(strlen(argv_exec[1]) + 12);
-				strcpy(msg, argv_exec[1]);
-				strcat(msg, " not found");
+				msg = malloc(_strlen(argv_exec[1]) + 12);
+				_strcpy(msg, argv_exec[1]);
+				_strcat(msg, " not found");
 				my_print(msg);
 				
 				free(msg);
 			}
 			free(path);
 
-			path = strdup(_getenv("PATH"));
+			path = _strdup(_getenv("PATH"));
 
 			if (path == NULL)
 			{
-				perror("fork_and_execute strdup failed");
+				perror("fork_and_execute _strdup failed");
 				exit(EXIT_FAILURE);
 			}
 
@@ -307,7 +307,7 @@ void fork_and_execute(char **argv_exec)
 		if (!cmd_path)
 		{
 			msg_fmt = ": Command not found\n";
-			msg = malloc(strlen(argv_exec[0] + strlen(msg_fmt) + 1));
+			msg = malloc(_strlen(argv_exec[0] + _strlen(msg_fmt) + 1));
 
 			if (!msg)
 			{
@@ -315,8 +315,8 @@ void fork_and_execute(char **argv_exec)
 				exit(EXIT_FAILURE);
 			}
 
-			strcpy(msg, argv_exec[0]);
-			strcat(msg, msg_fmt);
+			_strcpy(msg, argv_exec[0]);
+			_strcat(msg, msg_fmt);
 
 			my_print(msg);
 
