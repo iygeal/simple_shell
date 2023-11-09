@@ -100,4 +100,8 @@ void handle_sigint(int sig)
 	write(STDOUT_FILENO, "\n", 1);
 	my_print("iyjim_shell$ ");
 	fflush(stdout);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> b13081d (simple shell implementation)
