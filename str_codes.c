@@ -77,7 +77,7 @@ int _strlen(char *s)
 #include "shell.h"
 
 /**
- * char *_strcpy - Thi function copies the string pointed to by src
+ * char *_strcpy - This function copies the string pointed to by src
  * @dest: copy to
  * @src: copy from
  * Return: string
