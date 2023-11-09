@@ -40,10 +40,6 @@ char *find_command(char *command);
 char *_getenv(const char *name);
 void handle_sigint(int sig);
 PathNode *build_path_list(char *path);
-<<<<<<< HEAD
-int _setenv(const char *name, const char *value, int overwrite);
-=======
->>>>>>> b13081d (simple shell implementation)
 
 char *_strcpy(char *dest, char *src);
 char *_strcat(char *dest, char *src);
