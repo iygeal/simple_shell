@@ -1,10 +1,10 @@
 #include "shell.h"
 /**
- * _strdup - Function that returns a pointer to newly alocated space in memory
+ * _strdup - Function that returns a pointer to newly allocated space in memory
  * @str: A string
  * Return: Returns new string or NULL
  */
-char *_strdup(char *str)
+char *_strdup(const char *str)
 {
 	int i;
 	int j;
@@ -21,6 +21,7 @@ char *_strdup(char *str)
 		n++;
 	}
 	str2 = malloc(n * sizeof(char) + 1);
+
 	if (str2 == NULL)
 	{
 		return (NULL);
@@ -64,7 +65,7 @@ char *_strcat(char *dest, char *src)
  * @s: String whose length is to be calclulated
  * Return: _strlen
  */
-int _strlen(char *s)
+int _strlen(const char *s)
 {
 	int i;
 	int length = 0;
