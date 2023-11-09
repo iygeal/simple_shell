@@ -38,7 +38,7 @@ char **split_line(char *line)
 
   while (word != NULL)
   {
-    if (word[0] == '"' || word[strlen(word)-1] == '"')
+    if (word[0] == '"' || word[_strlen(word)-1] == '"')
     {
       if (!in_quotes)
       {
