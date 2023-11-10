@@ -47,7 +47,5 @@ int _strlen(const char *s);
 int _strcmp(char *s1, char *s2);
 char *_strdup(const char *str);
 char *_strchr(const char *str, int j);
-int _setenv(const char *name, const char *value, int overwrite);
-int _strncmp(const char *s1, const char *s2, size_t n);
-char *_memcpy(char *dest, char *src, unsigned int n);
+int _setenv(char *name, const char *value);
 #endif
