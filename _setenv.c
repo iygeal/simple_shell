@@ -8,10 +8,12 @@
  */
 int _setenv(const char *name, const char *value, int overwrite)
 {
-	int i, newEnvSize;
-	cha **envPtr = environ, **newEnvArray;
+	int newEnvSize;
+	char **envPtr = environ, **newEnvArray;
 
 	if (name == NULL || value == NULL || _strchr(name, '=') != NULL)
+		return (-1);
+	if (name[0] == '\0' || value[0] == '\0')
 		return (-1);
 	while (*envPtr != NULL)
 	{
