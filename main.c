@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 
 	signal(SIGINT, handle_sigint);
 
-	if (_setenv("PATH", "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", 1) == -1)
+	if (_setenv("PATH", "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin") == -1)
 	{
 		perror("Error setting PATH environment variable");
 		exit(EXIT_FAILURE);
