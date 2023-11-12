@@ -7,7 +7,6 @@
 char *_strdup(const char *str)
 {
 	int i;
-	int j;
 	int n = 0;
 	char *str2;
 
@@ -27,12 +26,14 @@ char *_strdup(const char *str)
 		return (NULL);
 	}
 
-	for (j = 0; j < n; j++)
+	for (i = 0; i < n; i++)
 	{
-		str2[j] = str[j];
+		str2[i] = str[i];
 	}
-	str2[j] = '\0';
+	str2[i] = '\0';
+
 return (str2);
+
 }
 
 #include "shell.h"
@@ -86,17 +87,14 @@ int _strlen(const char *s)
 char *_strcpy(char *dest, char *src)
 {
 	int l = 0;
-	int x = 0;
 
 	while (*(src + l) != '\0')
 	{
 		l++;
 	}
-	for ( ; x < l ; x++)
-	{
-		dest[x] = src[x];
-	}
+
 	dest[l] = '\0';
+
 	return (dest);
 }
 

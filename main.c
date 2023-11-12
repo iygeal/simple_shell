@@ -9,7 +9,7 @@
 
 int main(int argc, char *argv[])
 {
-	int i, fd;
+	int fd;
 	char *line = NULL;
 	size_t len = 0;
 	char **argv_exec = NULL;
@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 
 	if (_setenv("PATH", "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin") == -1)
 	{
-		perror("Error setting PATH environment variable");
+		print_err("setenv", 1, "PATH");
 		exit(EXIT_FAILURE);
 	}
 
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 
 	if (path == NULL)
 	{
-		perror("Failed to duplicate PATH");
+		print_err("strdup", 1, "PATH");
 		exit(EXIT_FAILURE);
 	}
 
@@ -54,19 +54,13 @@ int main(int argc, char *argv[])
 			}
 			else
 			{
-				perror("getline failed");
+				print_err("getline", 1, "stdin");
 			}
-				if (argv_exec != NULL)
-				{
-					for (i = 0; argv_exec[i] != NULL; i++)
-					{
-						free(argv_exec[i]);
-					}
-					free(argv_exec);
-					argv_exec = NULL;
-				}
-				free(line);
-				line = NULL;
+
+			free_argv_exec(&argv_exec);
+
+			free(line);
+			line = NULL;
 		}
 	}
 	else
@@ -75,7 +69,7 @@ int main(int argc, char *argv[])
 
 		if (fd == -1)
 		{
-			perror("Error opening file");
+			print_err("open", 1, argv[1]);
 			exit(EXIT_FAILURE);
 		}
 		while((bytes_read = read(fd, buffer, sizeof(buffer) - 1)) > 0)
@@ -101,7 +95,7 @@ int main(int argc, char *argv[])
 
 				if (line == NULL)
 				{
-					perror("Failed to allocate memory for line");
+					print_err("malloc", 1, "line");
 					exit(EXIT_FAILURE);
 				}
 				_strcpy(line, buffer + start_index);
@@ -109,15 +103,8 @@ int main(int argc, char *argv[])
 				process_line(line, &argv_exec);
 				fork_and_execute(argv_exec, &childExitStatus);
 
-				if (argv_exec != NULL)
-				{
-					for (i = 0; argv_exec[i] != NULL; i++)
-					{
-						free(argv_exec[i]);
-					}
-					free(argv_exec);
-					argv_exec = NULL;
-				}
+				free_argv_exec(&argv_exec);
+
 				free(line);
 				line = NULL;
 
@@ -126,22 +113,15 @@ int main(int argc, char *argv[])
 		}
 		if (bytes_read == -1)
 		{
-			perror("Error reading file");
+			print_err("read", 1, "file");
 			exit(EXIT_FAILURE);
 		}
 
 		close(fd);
 
 	}
-	if (argv_exec != NULL)
-    {
-		for (i = 0; argv_exec[i] != NULL; i++)
-		{
-			free(argv_exec[i]);
-        }
-        free(argv_exec);
-        argv_exec = NULL;
-	}
+
+	free_argv_exec(&argv_exec);
 
 	while (path_list != NULL)
 	{
