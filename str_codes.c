@@ -36,7 +36,6 @@ return (str2);
 
 }
 
-#include "shell.h"
 /**
  * _strcat - String Concatenator
  * @dest: Destination string
@@ -46,6 +45,9 @@ return (str2);
 char *_strcat(char *dest, char *src)
 {
 	char *destlen = dest;
+
+	if (dest == NULL || src == NULL)
+		return (NULL);
 
 	while (*dest != '\0')
 		dest++;
@@ -60,7 +62,6 @@ char *_strcat(char *dest, char *src)
 	return (destlen);
 }
 
-#include "shell.h"
 /**
  * _strlen - Calculates string length
  * @s: String whose length is to be calclulated
@@ -71,12 +72,11 @@ int _strlen(const char *s)
 	int i;
 	int length = 0;
 
-	for (i = 0 ; s[i] != '\0' ; i++)
+	for (i = 0; s[i] != '\0'; i++)
 		length++;
 	return (length);
 }
 
-#include "shell.h"
 
 /**
  * char *_strcpy - This function copies the string pointed to by src
@@ -98,7 +98,6 @@ char *_strcpy(char *dest, char *src)
 	return (dest);
 }
 
-#include "shell.h"
 /**
  * _strcmp - Function which compares strings
  * @s1: First String
