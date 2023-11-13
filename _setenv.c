@@ -10,13 +10,13 @@ int _setenv(char *name, const char *value)
 {
 	if (name == NULL || value == NULL)
 	{
-		print_err("setenv", 1, "Variable not found");
+		perror("Variable not found");
 		return (-1);
 	}
 
 	if (setenv(name, value, 1) != 0)
 	{
-		print_err("setenv", 2, name);
+		perror(name);
 		return (-1);
 	}
 

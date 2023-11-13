@@ -1,6 +1,24 @@
 #include "shell.h"
 
 /**
+ * print_arguments - print command line arguments
+ * @argv: The array of the command line arguments
+ * Return: Void
+ */
+
+void print_arguments(char **argv)
+{
+	argv++;
+
+	while (*argv)
+	{
+		my_print(*argv);
+		my_print("\n");
+		argv++;
+	}
+}
+
+/**
  *_getenv - Get a copy of the value of an environment variable
  *@name: The name of the environment variable
  *Return: A new string containing the value of the environment variable
@@ -44,6 +62,14 @@ PathNode *build_path_list(char *path)
 		}
 
 		new_node->dir = _strdup(dir);
+
+		if (new_node->dir == NULL)
+		{
+			perror("Failed to duplicate directory string");
+			free(new_node);
+			exit(EXIT_FAILURE);
+		}
+
 		new_node->next = NULL;
 
 		if (head == NULL)

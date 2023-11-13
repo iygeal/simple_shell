@@ -1,22 +1,6 @@
 #include "shell.h"
 
 /**
- * print_arguments - print command line arguments
- * @argv: The array of the command line arguments
- * Return: Void
- */
-void print_arguments(char **argv)
-{
-  argv++;
-  while (*argv)
-  {
-    my_print(*argv);
-    my_print("\n");
-    argv++;
-  }
-}
-
-/**
  * split_line - splits a line into words
  * @line: The line to be split
  * Return: An array of words
@@ -26,11 +10,11 @@ char **split_line(char *line)
 {
   char **words = malloc(MAX_LINE * sizeof(char *));
   char *word, *word_cp;
-  int i, index = 0, in_quotes = 0;
+  int index = 0, in_quotes = 0;
 
   if (!words)
   {
-    print_err("malloc", 1, "Memory allocation failed");
+    perror("Memory allocation failed");
     exit(EXIT_FAILURE);
   }
 
@@ -40,7 +24,7 @@ char **split_line(char *line)
   {
     if (index >= MAX_LINE)
     {
-      print_err("split_line", 1, "index out of bounds");
+      perror("Index out of bounds");
       exit(EXIT_FAILURE);
     }
 
@@ -48,7 +32,7 @@ char **split_line(char *line)
 
     if (word_cp == NULL)
     {
-      print_err("split_line", 1, "Memory allocation failed ");
+      perror("Memory allocation failed ");
       exit(EXIT_FAILURE);
     }
 
@@ -57,11 +41,7 @@ char **split_line(char *line)
       if (!in_quotes && word_cp[0] == '"')
       {
         in_quotes = 1;
-
-        for (i = 0; word_cp[i] != '\0'; i++)
-        {
-          word_cp[i] = word_cp[i + 1];
-        }
+        memmove(word_cp, word_cp + 1, _strlen(word_cp));
       }
       else if (_strlen(word_cp) > 0 && word_cp[_strlen(word_cp) -1] == '"')
       {
@@ -76,7 +56,7 @@ char **split_line(char *line)
     {
       if (index >= MAX_LINE)
       {
-        print_err("split_line", 1, "index out of bounds");
+        perror("Index out of bounds");
         exit(EXIT_FAILURE);
       }
 
@@ -84,7 +64,7 @@ char **split_line(char *line)
 
       if (word_cp == NULL)
       {
-        print_err("_strdup", 1, "Memory allocation failed");
+        perror("Memory allocation failed");
         exit(EXIT_FAILURE);
       }
 
@@ -132,7 +112,7 @@ void process_line(char *line, char ***argv_exec)
 
   if (*argv_exec == NULL)
   {
-    print_err("process_line", 2, "malloc failed");
+    perror("Malloc failed");
     exit(EXIT_FAILURE);
   }
 
@@ -142,7 +122,7 @@ void process_line(char *line, char ***argv_exec)
 
     if ((*argv_exec)[i] == NULL)
     {
-      print_err("process_line", 2, "_strdup failed");
+      perror("Strdup failed");
       exit(EXIT_FAILURE);
     }
 
@@ -186,13 +166,13 @@ void execute_ls_command(char **argv_exec)
     pid = fork();
     if (pid < 0)
     {
-      print_err("execute_ls_command", 2, "Error forking child");
+      perror("Error forking child");
       exit(EXIT_FAILURE);
     }
     else if (pid == 0)
     {
       execve(argv_exec[0], argv_exec, environ);
-      print_err("execute_ls_command", 2, "Error executing command");
+      perror("Error executing command");
       exit(EXIT_FAILURE);
     }
     else
@@ -254,14 +234,14 @@ char *find_command(char *command)
 
   if (!path)
   {
-    print_err("find_command", __LINE__, "PATH environment variable not set");
+    perror("PATH environment variable not set");
 
     return ("NULL");
   }
 
     if (!path_copy)
     {
-        print_err("find_command", __LINE__, "Failed to duplicate PATH");
+        perror("Failed to duplicate PATH");
         exit(EXIT_FAILURE);
     }
 
@@ -273,7 +253,7 @@ char *find_command(char *command)
 
         if (!filepath)
         {
-            print_err("find_command", __LINE__, "Failed to allocate memory for filepath");
+            perror("Failed to allocate memory for filepath");
             exit(EXIT_FAILURE);
         }
     filepath[0] = '\0';
@@ -320,7 +300,7 @@ void fork_and_execute(char **argv_exec, int* childExitStatus)
 
     if (path == NULL)
     {
-      print_err("fork_and_execute", __LINE__, "_strdup failed");
+      perror("_strdup failed");
       exit(EXIT_FAILURE);
     }
 
@@ -335,7 +315,7 @@ void fork_and_execute(char **argv_exec, int* childExitStatus)
 
         if (filepath == NULL)
         {
-          print_err("fork_and_execute", __LINE__, "malloc failed");
+          perror("malloc failed");
           exit(EXIT_FAILURE);
         }
         _strcpy(filepath, dir);
@@ -368,7 +348,7 @@ void fork_and_execute(char **argv_exec, int* childExitStatus)
 
       if (path == NULL)
       {
-        print_err("fork_and_execute", __LINE__, "_strdup failed");
+        perror("_strdup failed");
         exit(EXIT_FAILURE);
       }
 
@@ -386,7 +366,7 @@ void fork_and_execute(char **argv_exec, int* childExitStatus)
 
       if (!msg)
       {
-        print_err("fork_and_execute", __LINE__, "malloc error");
+        perror("malloc error");
         exit(EXIT_FAILURE);
       }
 
@@ -403,14 +383,14 @@ void fork_and_execute(char **argv_exec, int* childExitStatus)
 
     if (pid < 0)
     {
-      print_err("fork_and_execute", __LINE__, "Error forking child");
+      perror("Error forking child");
       exit(EXIT_FAILURE);
     }
     else if (pid == 0)
     {
       if (execve(cmd_path, argv_exec, environ) == -1)
       {
-        print_err("fork_and_execute", __LINE__, argv_exec[0]);
+        perror(argv_exec[0]);
         exit(EXIT_FAILURE);
       }
     }
@@ -418,7 +398,7 @@ void fork_and_execute(char **argv_exec, int* childExitStatus)
     {
       if (wait(&status) == -1)
       {
-        print_err("fork_and_execute", __LINE__, "Error waiting for child process");
+        perror("Error waiting for child process");
         exit(EXIT_FAILURE);
       }
       if (WIFEXITED(status))

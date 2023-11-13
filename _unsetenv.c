@@ -4,23 +4,26 @@
  * @name: The variable name
  * Return: 0 on success, -1 on failure
  */
+
 int _unsetenv(const char *name)
 {
+	char *mut_name;
+
 	if (!name)
 	{
-		print_err("unsetenv", 1, "Variable not found");
+		perror("Variable not found");
 		return (-1);
 	}
 	if (unsetenv(name) != 0)
 	{
-		char *mut_name = strdup(name);
+		mut_name = strdup(name);
 
 		if (!mut_name)
 		{
-			print_err("unsetenv", 2, "Memory allocation failure");
+			perror("Memory allocation failure");
 			return (-1);
 		}
-		print_err("unsetenv", 2, mut_name);
+		perror(mut_name);
 		free(mut_name);
 		return (-1);
 	}

@@ -41,8 +41,10 @@ char *find_command(char *command);
 char *_getenv(const char *name);
 void handle_sigint(int sig);
 PathNode *build_path_list(char *path);
-void print_err(char *prg, int cnt, char *cmd);
 void free_argv_exec(char ***argv_exec);
+void print_and_process_line(char **line, char ***argv_exec);
+void read_and_process_file(char *argv[]);
+
 
 char *_strcpy(char *dest, char *src);
 char *_strcat(char *dest, char *src);
