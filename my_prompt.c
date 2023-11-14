@@ -1,8 +1,8 @@
 #include "shell.h"
 
 /**
- * handle_quotes - Handles quotes in a word.
- * @word_cp: The word to handle quotes for.
+ * handle_quotes - Handles quotes in a word
+ * @word_cp: The word to handle quotes for
  * @in_quotes: Pointer to a flag indicating if we're inside quotes.
  * Return: The word with quotes handled.
  */
