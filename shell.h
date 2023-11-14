@@ -34,10 +34,17 @@ int main(int argc, char *argv[]);
 void my_print(const char *msg);
 void fork_and_execute(char **argv_exec, int *childExitStatus);
 void process_line(char *line, char ***argv_exec);
+char **create_argv_exec(char **words);
+void free_words(char **words);
 void print_arguments(char **argv);
 char **split_line(char *line);
+char *handle_quotes(char *word_cp, int *in_quotes);
+void copy_word_and_handle_quotes(char *word, int *in_quotes,
+int *index, char **words);
 void execute_ls_command(char **argv_exec);
+void generate_child_message(char *buffer, int child_num);
 char *find_command(char *command);
+char *handle_dir(char *dir, char *command);
 char *_getenv(const char *name);
 void handle_sigint(int sig);
 PathNode *build_path_list(char *path);

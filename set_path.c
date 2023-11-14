@@ -1,18 +1,41 @@
 #include "shell.h"
 
 /**
- * set_environment_path - Set the environment path
+ * set_environment_path - Append/prepend paths to the environment PATH
  * Return: 0 on success, exit on failure
  */
 
 int set_environment_path(void)
 {
-	if (_setenv("PATH",
-	"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin") == -1)
+	char *old_path = _getenv("PATH");
+	char *new_path;
+
+	if (old_path == NULL)
 	{
+		perror("getenv: PATH");
+		exit(EXIT_FAILURE);
+	}
+
+	new_path = malloc(strlen(old_path) + strlen
+	("/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:") +	1);
+
+	if (new_path == NULL)
+	{
+		perror("malloc: new_path");
+		exit(EXIT_FAILURE);
+	}
+	_strcpy(new_path,
+	"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:");
+	_strcat(new_path, old_path);
+
+	if (_setenv("PATH", new_path) == -1)
+	{
+		free(new_path);
 		perror("setenv: PATH");
 		exit(EXIT_FAILURE);
 	}
+
+	free(new_path);
 	return (0);
 }
 

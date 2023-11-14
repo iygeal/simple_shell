@@ -121,3 +121,25 @@ void ex_chd(char *cmd_path, char **argv_exec, int *childExitStatus)
 		}
 	}
 }
+
+/**
+ * process_line - Process a line read from stdin.
+ * @line: The line read from stdin.
+ * @argv_exec: The array to be used for execve function.
+ * Return: Nothing.
+ */
+
+void process_line(char *line, char ***argv_exec)
+{
+	char **words = NULL;
+	size_t len;
+
+	len = _strlen(line);
+	if (len > 0 && line[len - 1] == '\n')
+	{
+		line[len - 1] = '\0';
+	}
+	words = split_line(line);
+	*argv_exec = create_argv_exec(words);
+	free_words(words);
+}
