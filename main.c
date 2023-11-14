@@ -90,11 +90,19 @@ void print_and_process_line(char **line, char ***argv_exec)
 	if (getline(line, &len, stdin) != -1)
 	{
 		process_line(*line, argv_exec);
-	fork_and_execute(*argv_exec, &childExitStatus);
+		fork_and_execute(*argv_exec, &childExitStatus);
 	}
 	else
 	{
-		perror("getline: stdin");
+		if (feof(stdin))
+		{
+			my_print("\n");
+			exit(EXIT_SUCCESS);
+		}
+		else
+		{
+			perror("getline: stdin");
+		}
 	}
 
 	free_argv_exec(argv_exec);
