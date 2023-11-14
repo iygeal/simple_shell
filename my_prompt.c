@@ -213,14 +213,14 @@ void execute_ls_command(char **argv_exec)
 char *find_command(char *command)
 {
   char *dir = NULL;
-    char *filepath = NULL;
+  char *filepath = NULL;
   char *path = NULL;
-    char *path_copy = NULL;
+  char *path_copy = NULL;
 
   path = _getenv("PATH");
-    path_copy = _strdup(path);
+  path_copy = _strdup(path);
 
-    if (command[0] == '/')
+  if (command[0] == '/')
   {
     if(access(command, F_OK | X_OK) == 0)
     {
@@ -274,138 +274,4 @@ char *find_command(char *command)
 
     free(path_copy);
     return (NULL);
-}
-
-/**
- * fork_and_execute - create a child process and execute a command
- * @argv_exec: The array containing the command
- * and arguments for execve
- * @childExitStatus: Pointer to an int to store the exit status
- * of the child process
- */
-
-void fork_and_execute(char **argv_exec, int* childExitStatus)
-{
-  int i = 0, status = 0;
-  char *msg = NULL;
-  char *msg_fmt = NULL;
-  char *cmd_path = NULL;
-  pid_t pid = 0;
-
-  if (_strcmp(argv_exec[0], "_which") == 0)
-  {
-    char *path = NULL;
-
-    path = _strdup(_getenv("PATH"));
-
-    if (path == NULL)
-    {
-      perror("_strdup failed");
-      exit(EXIT_FAILURE);
-    }
-
-    for (i = 1; argv_exec[i] != NULL; i++)
-    {
-      char *dir = strtok(path, ":");
-      char *filepath = NULL;
-
-      while (dir != NULL)
-      {
-        filepath = malloc(_strlen(dir) + _strlen(argv_exec[i]) + 2);
-
-        if (filepath == NULL)
-        {
-          perror("malloc failed");
-          exit(EXIT_FAILURE);
-        }
-        _strcpy(filepath, dir);
-        _strcat(filepath, "/");
-        _strcat(filepath, argv_exec[i]);
-
-        if (access(filepath, F_OK) == 0)
-        {
-          my_print(filepath);
-          free(filepath);
-
-          break;
-        }
-        free(filepath);
-
-        dir = strtok(NULL, ":");
-      }
-      if (dir == NULL)
-      {
-        msg = malloc(_strlen(argv_exec[1]) + 12);
-        _strcpy(msg, argv_exec[1]);
-        _strcat(msg, " not found");
-        my_print(msg);
-
-        free(msg);
-      }
-      free(path);
-
-      path = _strdup(_getenv("PATH"));
-
-      if (path == NULL)
-      {
-        perror("_strdup failed");
-        exit(EXIT_FAILURE);
-      }
-
-    }
-
-  }
-  else
-  {
-    cmd_path = find_command(argv_exec[0]);
-
-    if (!cmd_path)
-    {
-      msg_fmt = ": Command not found\n";
-      msg = malloc(_strlen(argv_exec[0] + _strlen(msg_fmt) + 1));
-
-      if (!msg)
-      {
-        perror("malloc error");
-        exit(EXIT_FAILURE);
-      }
-
-      _strcpy(msg, argv_exec[0]);
-      _strcat(msg, msg_fmt);
-
-      my_print(msg);
-
-      free(msg);
-      exit(EXIT_FAILURE);
-    }
-
-    pid = fork();
-
-    if (pid < 0)
-    {
-      perror("Error forking child");
-      exit(EXIT_FAILURE);
-    }
-    else if (pid == 0)
-    {
-      if (execve(cmd_path, argv_exec, environ) == -1)
-      {
-        perror(argv_exec[0]);
-        exit(EXIT_FAILURE);
-      }
-    }
-    else
-    {
-      if (wait(&status) == -1)
-      {
-        perror("Error waiting for child process");
-        exit(EXIT_FAILURE);
-      }
-      if (WIFEXITED(status))
-      {
-        *childExitStatus = WEXITSTATUS(status);
-      }
-    }
-    free(cmd_path);
-  }
 }

@@ -44,6 +44,18 @@ PathNode *build_path_list(char *path);
 void free_argv_exec(char ***argv_exec);
 void print_and_process_line(char **line, char ***argv_exec);
 void read_and_process_file(char *argv[]);
+void process_buffer(char *buffer, int bytes_read);
+void change_dir(char **argv_exec);
+void change_and_update_pwd(char *dir_to_go);
+void handle_exit(char **argv_exec);
+void handle_which(char **argv_exec);
+void check_path_and_execute(char *path, char *command);
+void handle_other_commands(char **argv_exec, int *childExitStatus);
+void ex_chd(char *cmd_path, char **argv_exec, int *childExitStatus);
+int set_environment_path(void);
+char *get_path(void);
+void process_standard_input(char **line, char ***argv_exec);
+void process_input(int argc, char **line, char ***argv_exec, char **argv);
 
 
 char *_strcpy(char *dest, char *src);
