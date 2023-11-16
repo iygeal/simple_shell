@@ -45,7 +45,6 @@ void execute_ls_command(char **argv_exec);
 void generate_child_message(char *buffer, int child_num);
 char *find_command(char *command);
 char *handle_dir(char *dir, char *command);
-char *_getenv(const char *name);
 void handle_sigint(int sig);
 PathNode *build_path_list(char *path);
 void free_argv_exec(char ***argv_exec);
@@ -71,5 +70,7 @@ int _strlen(const char *s);
 int _strcmp(char *s1, char *s2);
 char *_strdup(const char *str);
 char *_strchr(const char *str, int j);
-int _setenv(char *name, const char *value);
+void free_path_list(PathNode *head);
+void free_strdup(char *str);
+void free_malloc(void *ptr);
 #endif

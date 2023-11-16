@@ -7,7 +7,7 @@
 
 int set_environment_path(void)
 {
-	char *old_path = _getenv("PATH");
+	char *old_path = getenv("PATH");
 	char *new_path;
 
 	if (old_path == NULL)
@@ -16,8 +16,8 @@ int set_environment_path(void)
 		exit(EXIT_FAILURE);
 	}
 
-	new_path = malloc(strlen(old_path) + strlen
-	("/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:") +	1);
+	new_path = malloc(_strlen(old_path) + 1 + _strlen
+	("/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:") + 1);
 
 	if (new_path == NULL)
 	{
@@ -26,9 +26,9 @@ int set_environment_path(void)
 	}
 	_strcpy(new_path,
 	"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:");
-	_strcat(new_path, old_path);
+	strcat(new_path, old_path);
 
-	if (_setenv("PATH", new_path) == -1)
+	if (setenv("PATH", new_path, 1) == -1)
 	{
 		free(new_path);
 		perror("setenv: PATH");
@@ -46,13 +46,18 @@ int set_environment_path(void)
 
 char *get_path(void)
 {
-	char *path = _strdup(_getenv("PATH"));
+	PathNode *path_list;
+
+	char *path = _strdup(getenv("PATH"));
 
 	if (path == NULL)
 	{
 		perror("strdup: PATH");
 		exit(EXIT_FAILURE);
 	}
+	path_list = build_path_list(path);
+	free_path_list(path_list);
+	return (path);
 	return (path);
 }
 

@@ -114,7 +114,7 @@ char *find_command(char *command)
 	char *path = NULL;
 	char *path_copy = NULL;
 
-	path = _getenv("PATH");
+	path = getenv("PATH");
 	path_copy = _strdup(path);
 
 	if (command[0] == '/')

@@ -139,7 +139,7 @@ void handle_which(char **argv_exec)
 	int i;
 	char *path = NULL;
 
-	path = _strdup(_getenv("PATH"));
+	path = _strdup(getenv("PATH"));
 	if (path == NULL)
 	{
 		perror("_strdup failed");

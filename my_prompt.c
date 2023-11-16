@@ -104,9 +104,10 @@ char **create_argv_exec(char **words)
 {
 	int i = 0;
 	char **argv_exec;
+	char *env_value;
 
 	while (words[i] != NULL)
-	i++;
+		i++;
 
 	argv_exec = malloc((i + 1) * sizeof(char *));
 	if (argv_exec == NULL)
@@ -119,8 +120,7 @@ char **create_argv_exec(char **words)
 	{
 		if (words[i][0] == '$')
 		{
-			char *env_value = _getenv(words[i] + 1);
-
+			env_value = getenv(words[i] + 1);
 			if (env_value != NULL)
 			{
 				free(words[i]);
@@ -138,6 +138,7 @@ char **create_argv_exec(char **words)
 			perror("Strdup failed");
 			exit(EXIT_FAILURE);
 		}
+		free_strdup(words[i]);
 	}
 	argv_exec[i] = NULL;
 	return (argv_exec);

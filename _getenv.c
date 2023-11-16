@@ -19,23 +19,6 @@ void print_arguments(char **argv)
 }
 
 /**
- *_getenv - Get a copy of the value of an environment variable
- *@name: The name of the environment variable
- *Return: A new string containing the value of the environment variable
- */
-
-char *_getenv(const char *name)
-{
-	char *value = getenv(name);
-
-	if (value == NULL)
-	{
-		return (NULL);
-	}
-	return (_strdup(value));
-}
-
-/**
  * path_list - Create a linked list of directories
  * from the given PATH variable
  * @path: A string containing a colon-separated
