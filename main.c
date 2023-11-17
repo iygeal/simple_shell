@@ -125,7 +125,6 @@ int main(int argc, char *argv[])
 	char **argv_exec = NULL;
 	char *path;
 	PathNode *path_list, *tmp;
-	int c = 0;
 
 	(void)argc;
 	print_arguments(argv);
@@ -136,11 +135,6 @@ int main(int argc, char *argv[])
 	free(path);
 	process_input(argc, &line, &argv_exec, argv);
 
-	while (argv_exec[c] != NULL)
-	{
-		free(argv_exec[c]);
-		c++;
-	}
 	while (path_list != NULL)
 	{
 		tmp = path_list;
