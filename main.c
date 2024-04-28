@@ -128,6 +128,7 @@ int main(int argc, char *argv[])
 
 	(void)argc;
 	print_arguments(argv);
+	printf("Check Error_one\n");
 	signal(SIGINT, handle_sigint);
 	set_environment_path();
 	path = get_path();

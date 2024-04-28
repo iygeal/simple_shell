@@ -44,7 +44,7 @@ PathNode *build_path_list(char *path)
 			exit(EXIT_FAILURE);
 		}
 
-		new_node->dir = _strdup(dir);
+		new_node->dir = strdup(dir);
 
 		if (new_node->dir == NULL)
 		{

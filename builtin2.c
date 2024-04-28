@@ -139,7 +139,11 @@ void process_line(char *line, char ***argv_exec)
 	{
 		line[len - 1] = '\0';
 	}
+	printf("Error Check_two\n");
 	words = split_line(line);
+	printf("Check Error_three\n");
 	*argv_exec = create_argv_exec(words);
-	free_words(words);
+	printf("Check Error_four\n");
+	free(words);
+	printf("Check_5\n");
 }
